@@ -1,33 +1,26 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import supabase from './config/supabaseClient'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [email, setEmail] = useState('')
+
+  const sendEmail = (emailAddress: string) => {
+    console.log(emailAddress);
+  } 
 
   return (
     <>
+      <span className='mr-5'>
+        <input className='email-input' placeholder='enter your email' onChange={(event) => setEmail(event.target.value)}></input>
+      </span>
+      <span>
+        <button className='bg-slate-800 text-white p-5 rounded' onClick={() => sendEmail(email)}>Submit</button>
+      </span>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {email}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
