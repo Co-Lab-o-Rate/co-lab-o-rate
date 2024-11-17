@@ -1,20 +1,17 @@
-import { useState } from 'react'
 import './App.css'
-import supabase from './config/supabaseClient'
+// import supabase from './config/supabaseClient'
 import logoLeft from './assets/logo-components/Colaborate_Logo_Colab.png'
 import logoCenter from './assets/logo-components/Colaborate_Logo_Hands.png'
 import logoRight from './assets/logo-components/Colaborate_Logo_Rate.png'
 
 function App() {
   
-  const [email, setEmail] = useState('')
-
-  const sendEmail = async (emailAddress: string) => {
-    const saveUser = await supabase?.from('user').insert({email: emailAddress, first_name: 'Joe', last_name: 'AB', password: 'abcdefg'});
-    if(saveUser?.error){
-      console.log(saveUser.error);
-    }
-  } 
+  // const sendEmail = async (emailAddress: string) => {
+  //   const saveUser = await supabase?.from('user').insert({email: emailAddress, first_name: 'Joe', last_name: 'AB', password: 'abcdefg'});
+  //   if(saveUser?.error){
+  //     console.log(saveUser.error);
+  //   }
+  // } 
 
   return (
     <>
@@ -27,7 +24,7 @@ function App() {
       </div>
       <div>Welcome to Co-Lab-o-Rate, an online platform where artists participate in collaborative drawing games and monetize their artwork into products. Let us know a bit about you...   </div>
       <span>
-        <button className='bg-slate-800 text-white p-5 rounded' onClick={() => sendEmail(email)}>Get Started!</button>
+        <button className='bg-slate-800 text-white p-5 rounded mt-2'>Get Started!</button>
       </span>
     </>
   )
