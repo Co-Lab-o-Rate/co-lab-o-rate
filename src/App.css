@@ -5,8 +5,15 @@
   text-align: center;
 }
 
+img{
+  max-width: none;
+}
+
+.logo-container{
+  flex-direction: column;
+}
+
 .logo {
-  padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
@@ -32,4 +39,13 @@
 
 .read-the-docs {
   color: #888;
+}
+
+@media only screen and (min-width: 800px) {
+
+  .logo-container{
+    flex-direction: row;
+    width: 600px;
+  }
+
 }
