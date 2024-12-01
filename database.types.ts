@@ -189,69 +189,95 @@ export type Database = {
         }
         Relationships: []
       }
-      Score: {
+      groups: {
         Row: {
-          board_id: number
+          created_at: string
+          group_name: string | null
           id: number
-          score: number
-          user_id: number
         }
         Insert: {
-          board_id: number
+          created_at?: string
+          group_name?: string | null
           id?: number
-          score: number
-          user_id: number
         }
         Update: {
-          board_id?: number
+          created_at?: string
+          group_name?: string | null
           id?: number
-          score?: number
-          user_id?: number
+        }
+        Relationships: []
+      }
+      questions: {
+        Row: {
+          created_at: string
+          group_id: number | null
+          id: number
+          question_text: string | null
+        }
+        Insert: {
+          created_at?: string
+          group_id?: number | null
+          id?: number
+          question_text?: string | null
+        }
+        Update: {
+          created_at?: string
+          group_id?: number | null
+          id?: number
+          question_text?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Score_fk2"
-            columns: ["user_id"]
+            foreignKeyName: "questions_group_id_fkey"
+            columns: ["group_id"]
             isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "Score_fk3"
-            columns: ["board_id"]
-            isOneToOne: false
-            referencedRelation: "connector_user_board"
+            referencedRelation: "groups"
             referencedColumns: ["id"]
           },
         ]
       }
       user: {
         Row: {
-          admin: boolean
+          admin: boolean | null
+          age: string | null
           email: string | null
-          first_name: string
+          first_name: string | null
           gallery_id: number | null
+          group_id: number | null
           id: number
-          last_name: string
-          password: string
+          last_name: string | null
+          location: string | null
+          password: string | null
+          phone_number: string | null
+          user_name: string | null
         }
         Insert: {
-          admin?: boolean
+          admin?: boolean | null
+          age?: string | null
           email?: string | null
-          first_name: string
+          first_name?: string | null
           gallery_id?: number | null
+          group_id?: number | null
           id?: number
-          last_name: string
-          password: string
+          last_name?: string | null
+          location?: string | null
+          password?: string | null
+          phone_number?: string | null
+          user_name?: string | null
         }
         Update: {
-          admin?: boolean
+          admin?: boolean | null
+          age?: string | null
           email?: string | null
-          first_name?: string
+          first_name?: string | null
           gallery_id?: number | null
+          group_id?: number | null
           id?: number
-          last_name?: string
-          password?: string
+          last_name?: string | null
+          location?: string | null
+          password?: string | null
+          phone_number?: string | null
+          user_name?: string | null
         }
         Relationships: [
           {
@@ -259,6 +285,52 @@ export type Database = {
             columns: ["gallery_id"]
             isOneToOne: false
             referencedRelation: "gallery"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_questions: {
+        Row: {
+          answer_text: string | null
+          created_at: string
+          id: number
+          question_id: number | null
+          user_id: number | null
+        }
+        Insert: {
+          answer_text?: string | null
+          created_at?: string
+          id?: number
+          question_id?: number | null
+          user_id?: number | null
+        }
+        Update: {
+          answer_text?: string | null
+          created_at?: string
+          id?: number
+          question_id?: number | null
+          user_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_questions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
