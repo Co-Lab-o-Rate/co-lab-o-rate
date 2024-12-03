@@ -9,7 +9,6 @@ import supabase from '../../config/supabaseClient'
 
 const WelcomePage = () => {
     const [surveyStep, setSurveyStep] = useState<number>(0);    
-    const [disabled, setDisabled] = useState<boolean>(false);
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
     const [incompleteForm, setIncompleteForm] = useState<boolean>(true);
 
@@ -50,7 +49,7 @@ const WelcomePage = () => {
       return input ? input.value : null;
     }
 
-    const allFieldsComplete = () => {
+    const notAllFieldsComplete = () => {
       const requiredFields = [
         'firstName',
         'lastName',
@@ -58,7 +57,7 @@ const WelcomePage = () => {
         'location',
         'email'
       ]
-      return requiredFields.some((field) => getInputValue(field) !== '');
+      return requiredFields.some((field) => getInputValue(field) === '');
     }
     
     const completeSurvey = () => {
@@ -153,10 +152,10 @@ const WelcomePage = () => {
             setAnswer={setAnswer} 
           />
         </div>
-        <button disabled={disabled} className={surveyStep < 1  ? 'invisible h-0' : 'bg-red-500 text-white rounded w-20 p-5 leading-none'} 
+        <button className={surveyStep < 1  ? 'invisible h-0' : 'bg-red-500 text-white rounded w-20 p-5 leading-none'} 
             onClick={()=> {
               setSubmitClicked(true);
-              if(allFieldsComplete()){
+              if(!notAllFieldsComplete()){
                 setIncompleteForm(false);
                 if(surveyStep===1){
                   saveInfo(isAdmin, firstName, lastName, age, location, email, phoneNumber);
