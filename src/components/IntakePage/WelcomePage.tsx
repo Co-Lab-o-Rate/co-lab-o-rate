@@ -9,6 +9,9 @@ import supabase from '../../config/supabaseClient'
 
 const WelcomePage = () => {
     const [surveyStep, setSurveyStep] = useState<number>(0);    
+    const [disabled, setDisabled] = useState<boolean>(false);
+    const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+    const [incompleteForm, setIncompleteForm] = useState<boolean>(true);
 
     //InterviewQuestions state
     const [questionCount, setQuestionCount] = useState(0);
@@ -41,18 +44,34 @@ const WelcomePage = () => {
     const [location, setLocation] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const getInputValue = (inputType: string) => {
+      const input = document.getElementById(inputType) as HTMLInputElement;
+      return input ? input.value : null;
+    }
+
+    const allFieldsComplete = () => {
+      const requiredFields = [
+        'firstName',
+        'lastName',
+        'age',
+        'location',
+        'email'
+      ]
+      return requiredFields.some((field) => getInputValue(field) !== '');
+    }
     
-    function completeSurvey(){
+    const completeSurvey = () => {
       //route to next page
       console.log('going to app...');
     }
     
-    function updateAnswer(event: any){
+    const updateAnswer = (event: any) => {
         console.log(event.target.value);
         setAnswer(event.target.value);
     }
     
-    function saveAnswer(newAnswer: string){
+    const saveAnswer = (newAnswer: string) => {
         answerArray.push(newAnswer);
         setAnswer(()=> {
             console.log(answerArray);
@@ -71,9 +90,9 @@ const WelcomePage = () => {
         phone_number: phoneNumber
       }
       const saveProfile = await supabase?.from('user').insert(payload);
-    if(saveProfile?.error){
-        console.log(saveProfile.error);
-    }
+      if(saveProfile?.error){
+          console.log(saveProfile.error);
+      }
     }
     
     return (
@@ -101,7 +120,8 @@ const WelcomePage = () => {
         Let us know a bit about you... 
         </div>
         <div className={surveyStep > 0 ? 'invisible h-0' : 'start-button mt-5'}>
-          <button className='bg-red-500 text-white p-5 rounded mt-2' onClick={()=>setSurveyStep(surveyStep + 1)}>Get Started!</button>
+          <button className='bg-red-500 text-white p-5 rounded mt-2' 
+            onClick={()=>setSurveyStep(surveyStep + 1)}>Get Started!</button>
         </div>
         <div className={surveyStep !== 1  ? 'invisible h-0' : 'survey-container mt-5'}>
           <InfoForm 
@@ -119,30 +139,48 @@ const WelcomePage = () => {
             setEmail={setEmail}
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
+            submitClicked={submitClicked}
+            getInputValue={getInputValue}
           />
         </div>
         <div className={surveyStep < 2  ? 'invisible h-0' : 'survey-container'}>
-          <InterviewQuestions questions={questions} questionCount={questionCount} answerArray={answerArray} updateAnswer={updateAnswer} answer={answer} setAnswer={setAnswer} />
+          <InterviewQuestions 
+            questions={questions} 
+            questionCount={questionCount} 
+            answerArray={answerArray} 
+            updateAnswer={updateAnswer} 
+            answer={answer} 
+            setAnswer={setAnswer} 
+          />
         </div>
-        <button className={surveyStep < 1  ? 'invisible h-0' : 'bg-red-500 text-white rounded w-20 p-5 leading-none'} 
-                      onClick={()=> {
-                        if(surveyStep===1){
-                          saveInfo(isAdmin, firstName, lastName, age, location, email, phoneNumber);
-                          setSurveyStep(surveyStep + 1);
-                        } else {
-                          setQuestionCount(()=> {
-                            if(questionCount === questions.length){
-                                completeSurvey()
-                                return questionCount;
-                            };
-                            saveAnswer(answer);
-                            setSurveyStep(surveyStep + 1);
-                            return questionCount+1
-                            })
-                        }
-                      }}>
-                      {questionCount < questions.length ? "Next" : "Complete"}
-                  </button>
+        <button disabled={disabled} className={surveyStep < 1  ? 'invisible h-0' : 'bg-red-500 text-white rounded w-20 p-5 leading-none'} 
+            onClick={()=> {
+              setSubmitClicked(true);
+              if(allFieldsComplete()){
+                setIncompleteForm(false);
+                if(surveyStep===1){
+                  saveInfo(isAdmin, firstName, lastName, age, location, email, phoneNumber);
+                  setSurveyStep(surveyStep + 1);
+                } else {
+                  setQuestionCount(()=> {
+                    if(questionCount === questions.length){
+                        completeSurvey()
+                        return questionCount;
+                    };
+                    saveAnswer(answer);
+                    setSurveyStep(surveyStep + 1);
+                    return questionCount+1
+                    })
+                }
+              } else {
+                setIncompleteForm(true)
+              }
+            }}>
+            {questionCount < questions.length ? "Next" : "Complete"}
+        </button>
+        <div className={incompleteForm && submitClicked ? "text-pink-600" : 'invisible h-0'}>
+            please complete all required fields
+        </div>
       </>
     )
 }
