@@ -88,7 +88,7 @@ const SignUpForm: FC<ComponentProps> = () => {
                             </input>
                         </div>
                     </div>
-                    <div className={ passwordInvalid && continueClicked ? 'text-pink-600' : 'invisible h-0'}>Invalid email or password</div>     
+                    <div className={ passwordInvalid && continueClicked ? 'text-pink-600' : 'invisible h-0'}>Password must be over 6 characters</div>     
                     <div>
                         <button className="bg-red-500 text-white rounded w-20 p-3 leading-none mt-3"
                         onClick={() => {
