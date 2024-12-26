@@ -1,61 +1,73 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC, useState } from "react";
+import supabase from "../../config/supabaseClient";
+import LogoHeader from "../LogoHeader/LogoHeader";
+import { useNavigate } from "react-router";
 
 interface ComponentProps {
-    isAdmin: boolean;
-    setIsAdmin: Dispatch<SetStateAction<boolean>>
-    firstName: string;
-    setFirstName: Dispatch<SetStateAction<string>>
-    lastName: string;
-    setLastName: Dispatch<SetStateAction<string>> 
-    age: string;
-    setAge: Dispatch<SetStateAction<string>>
-    location: string;
-    setLocation: Dispatch<SetStateAction<string>>
-    email: string;
-    setEmail: Dispatch<SetStateAction<string>>
-    phoneNumber: string;
-    setPhoneNumber: Dispatch<SetStateAction<string>>
-    submitClicked: boolean;
-    getInputValue: (inputType: string) => string | null;
+    //props placeholder
 }
 
-const InfoForm: FC<ComponentProps> = ({
-    isAdmin, setIsAdmin,
-    firstName, setFirstName, 
-    lastName, setLastName, 
-    age, setAge, 
-    location, setLocation,
-    email, setEmail,
-    phoneNumber, setPhoneNumber,
-    submitClicked, getInputValue
-}) => {
+const InfoForm: FC<ComponentProps> = () => {
 
-    const handleInputChange = (type: string, value: string) => {
-        switch(type){
-            case('firstName'):
-                setFirstName(value);
-                break;
-            case('lastName'):
-                setLastName(value);
-                break;
-            case('age'):
-                setAge(value);
-                break;
-            case('location'):
-                setLocation(value);
-                break;
-            case('email'):
-                setEmail(value);
-                break;
-            case('phoneNumber'):
-                setPhoneNumber(value);
-                break;
-            default:
-                console.log('something went wrong');
+    const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        age: '',
+        location: '',
+        phoneNumber: ''
+    });
+
+    const goToInterview = () => {
+        navigate('/interview');
+      }
+
+    const handleInputChange = (event: any) => {
+        setFormData((prevFormData) => {            
+            return{
+                ...prevFormData,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
+    const [submitClicked, setSubmitClicked] = useState(false);
+
+    const getInputValue = (inputType: string) => {
+      const input = document.getElementById(inputType) as HTMLInputElement;
+      return input ? input.value : null;
+    }
+
+    const notAllFieldsComplete = () => {
+      const requiredFields = [
+        'firstName',
+        'lastName',
+        'age',
+        'location',
+        'email'
+      ]
+      return requiredFields.some((field) => getInputValue(field) === '');
+    }
+
+    const saveInfo = async (admin?: boolean, firstName?: string, lastName?: string, age?: string, location?: string, email?: string, phoneNumber?: string) => {
+        const payload = {
+          admin: admin || false,
+          first_name: firstName,
+          last_name: lastName,
+          age: age,
+          location: location,
+          email: email,
+          phone_number: phoneNumber
+        }
+        const saveProfile = await supabase?.from('user').insert(payload);
+        if(saveProfile?.error){
+            console.log(saveProfile.error);
         }
     }
 
     return(
+        <>
+        <LogoHeader/>
         <div className="flex flex-col">
             <div className="invisible">
                 <h6>Admin?</h6>
@@ -68,8 +80,9 @@ const InfoForm: FC<ComponentProps> = ({
                 <h6>First Name:</h6>
                 <input className={getInputValue('firstName') === '' && submitClicked ? "border-2 border-pink-600 bg-teal-100" : "bg-teal-100"}
                 id='firstName'
-                onChange={(event)=>handleInputChange('firstName', event.target.value)}
-                value={firstName}
+                name='firstName'
+                onChange={handleInputChange}
+                value={formData.firstName}
                 ></input>
                 <div className={getInputValue('firstName') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter first name
@@ -79,8 +92,9 @@ const InfoForm: FC<ComponentProps> = ({
                 <h6>Last Name:</h6>
                 <input className={getInputValue('lastName') === '' && submitClicked ? "border-2 border-pink-600 bg-amber-200" : "bg-amber-200"}
                 id='lastName'
-                onChange={(event)=>handleInputChange('lastName', event.target.value)}
-                value={lastName}
+                name='lastName'
+                onChange={handleInputChange}                
+                value={formData.lastName}
                 ></input>
                 <div className={getInputValue('lastName') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter last name
@@ -90,8 +104,9 @@ const InfoForm: FC<ComponentProps> = ({
                 <h6>Age:</h6>
                 <input className={getInputValue('age') === '' && submitClicked ? "border-2 border-pink-600 bg-red-200" : "bg-red-200"}
                 id='age'
-                onChange={(event)=>handleInputChange('age', event.target.value)}
-                value={age}
+                name='age'
+                onChange={handleInputChange}                
+                value={formData.age}
                 ></input>
                 <div className={getInputValue('age') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter age
@@ -101,33 +116,37 @@ const InfoForm: FC<ComponentProps> = ({
                 <h6>Location:</h6>
                 <input className={getInputValue('location') === '' && submitClicked ? "border-2 border-pink-600 bg-amber-200" : "bg-amber-200"}
                 id='location'
-                onChange={(event)=>handleInputChange('location', event.target.value)}
-                value={location}
+                name='location'
+                onChange={handleInputChange}                
+                value={formData.location}
                 ></input>
                  <div className={getInputValue('location') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter location
                 </div>
             </div>
-            <div className="mt-2">
-                <h6>Email:</h6>
-                <input className={getInputValue('email') === '' && submitClicked ? "border-2 border-pink-600 bg-teal-100" : "bg-teal-100"}
-                id='email'
-                onChange={(event)=>handleInputChange('email', event.target.value)}
-                value={email}
-                ></input>
-                  <div className={getInputValue('email') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
-                    please enter email
-                </div>
-            </div>
             <div className="mt-2 mb-5">
                 <h6>Phone Number:</h6>
                 <input className="bg-red-200"
-                id='phone'
-                onChange={(event)=>handleInputChange('phoneNumber', event.target.value)}
-                value={phoneNumber}
+                id='phoneNumber'
+                name='phoneNumber'
+                onChange={handleInputChange}                
+                value={formData.phoneNumber}
                 ></input>
             </div>
+            <div className="">
+                <button className='bg-red-500 text-white rounded w-20 p-3 leading-none mt-3' 
+                    onClick={()=> {
+                        setSubmitClicked(true);
+                        if(!notAllFieldsComplete()){
+                            saveInfo(isAdmin, formData.firstName, formData.lastName, formData.age, formData.location, formData.phoneNumber);
+                            goToInterview();
+                        }
+                    }}>
+                    Next
+                </button>
+            </div>
         </div>
+        </>
     )
 }
 
