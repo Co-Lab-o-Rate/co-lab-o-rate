@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
+import {UserContext, UserContextType} from "../../context/UserContext";
+import React from "react";
 
 interface ComponentProps {
     //props placeholder
@@ -9,6 +11,7 @@ interface ComponentProps {
 
 const InfoForm: FC<ComponentProps> = () => {
 
+    const { user } = React.useContext(UserContext) as UserContextType;
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const [formData, setFormData] = useState({
@@ -49,19 +52,23 @@ const InfoForm: FC<ComponentProps> = () => {
       return requiredFields.some((field) => getInputValue(field) === '');
     }
 
-    const saveInfo = async (admin?: boolean, firstName?: string, lastName?: string, age?: string, location?: string, email?: string, phoneNumber?: string) => {
+    const saveInfo = async (admin?: boolean, firstName?: string, lastName?: string, age?: string, location?: string, phoneNumber?: string) => {
+        
         const payload = {
-          admin: admin || false,
-          first_name: firstName,
-          last_name: lastName,
-          age: age,
-          location: location,
-          email: email,
-          phone_number: phoneNumber
+            admin: admin || false,
+            first_name: firstName,
+            last_name: lastName,
+            age: age,
+            location: location,
+            phone_number: phoneNumber
         }
-        const saveProfile = await supabase?.from('user').insert(payload);
+
+        const saveProfile = await supabase?.from('profiles').update(payload).eq("id", user.id);
+
         if(saveProfile?.error){
             console.log(saveProfile.error);
+        } else {
+            goToInterview();
         }
     }
 
@@ -72,10 +79,12 @@ const InfoForm: FC<ComponentProps> = () => {
             <div className="invisible">
                 <h6>Admin?</h6>
                 <input type='checkbox'
-                    onChange={() => setIsAdmin(!isAdmin)}
+                    name='admin'
+                    onChange={() => {setIsAdmin(true)}}
                 >
                 </input>
             </div>
+            <p>Thanks for signing up! We'd like to to know a little more about you...</p>
             <div className={ "mt-2"}>
                 <h6>First Name:</h6>
                 <input className={getInputValue('firstName') === '' && submitClicked ? "border-2 border-pink-600 bg-teal-100" : "bg-teal-100"}
@@ -139,7 +148,6 @@ const InfoForm: FC<ComponentProps> = () => {
                         setSubmitClicked(true);
                         if(!notAllFieldsComplete()){
                             saveInfo(isAdmin, formData.firstName, formData.lastName, formData.age, formData.location, formData.phoneNumber);
-                            goToInterview();
                         }
                     }}>
                     Next
