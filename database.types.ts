@@ -34,7 +34,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      art_image: {
+      artwork: {
         Row: {
           artist: string
           description: string
@@ -93,7 +93,7 @@ export type Database = {
           },
         ]
       }
-      connector_gallery_image: {
+      connector_gallery_artwork: {
         Row: {
           gallery_id: number
           id: number
@@ -121,33 +121,69 @@ export type Database = {
             foreignKeyName: "connector_gallery_image_fk2"
             columns: ["image_id"]
             isOneToOne: false
-            referencedRelation: "art_image"
+            referencedRelation: "artwork"
             referencedColumns: ["id"]
           },
         ]
       }
-      connector_user_board: {
+      connector_groups_profiles: {
+        Row: {
+          created_at: string
+          group_id: number | null
+          id: number
+          profile_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          group_id?: number | null
+          id?: number
+          profile_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          group_id?: number | null
+          id?: number
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connector_groups_profiles_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_groups_profiles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connector_profile_board: {
         Row: {
           board_id: number
           id: number
-          user_id: number
+          profile_id: string | null
         }
         Insert: {
           board_id: number
           id?: number
-          user_id: number
+          profile_id?: string | null
         }
         Update: {
           board_id?: number
           id?: number
-          user_id?: number
+          profile_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "connector_user_board_fk1"
-            columns: ["user_id"]
+            foreignKeyName: "connector_profile_board_profile_id_fkey"
+            columns: ["profile_id"]
             isOneToOne: false
-            referencedRelation: "user"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
@@ -163,16 +199,27 @@ export type Database = {
         Row: {
           id: number
           name: string
+          profile_id: string | null
         }
         Insert: {
           id?: number
           name: string
+          profile_id?: string | null
         }
         Update: {
           id?: number
           name?: string
+          profile_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "gallery_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       game_board: {
         Row: {
@@ -207,6 +254,78 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_questions: {
+        Row: {
+          answer_text: string | null
+          created_at: string
+          id: number
+          profile_id: string | null
+          question_id: number | null
+        }
+        Insert: {
+          answer_text?: string | null
+          created_at?: string
+          id?: number
+          profile_id?: string | null
+          question_id?: number | null
+        }
+        Update: {
+          answer_text?: string | null
+          created_at?: string
+          id?: number
+          profile_id?: string | null
+          question_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_questions_user_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          admin: boolean | null
+          age: string | null
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          location: string | null
+          phone_number: string | null
+        }
+        Insert: {
+          admin?: boolean | null
+          age?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string | null
+          phone_number?: string | null
+        }
+        Update: {
+          admin?: boolean | null
+          age?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string | null
+          phone_number?: string | null
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           created_at: string
@@ -232,105 +351,6 @@ export type Database = {
             columns: ["group_id"]
             isOneToOne: false
             referencedRelation: "groups"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user: {
-        Row: {
-          admin: boolean | null
-          age: string | null
-          email: string | null
-          first_name: string | null
-          gallery_id: number | null
-          group_id: number | null
-          id: number
-          last_name: string | null
-          location: string | null
-          password: string | null
-          phone_number: string | null
-          user_name: string | null
-        }
-        Insert: {
-          admin?: boolean | null
-          age?: string | null
-          email?: string | null
-          first_name?: string | null
-          gallery_id?: number | null
-          group_id?: number | null
-          id?: number
-          last_name?: string | null
-          location?: string | null
-          password?: string | null
-          phone_number?: string | null
-          user_name?: string | null
-        }
-        Update: {
-          admin?: boolean | null
-          age?: string | null
-          email?: string | null
-          first_name?: string | null
-          gallery_id?: number | null
-          group_id?: number | null
-          id?: number
-          last_name?: string | null
-          location?: string | null
-          password?: string | null
-          phone_number?: string | null
-          user_name?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_fk4"
-            columns: ["gallery_id"]
-            isOneToOne: false
-            referencedRelation: "gallery"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_group_id_fkey"
-            columns: ["group_id"]
-            isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_questions: {
-        Row: {
-          answer_text: string | null
-          created_at: string
-          id: number
-          question_id: number | null
-          user_id: number | null
-        }
-        Insert: {
-          answer_text?: string | null
-          created_at?: string
-          id?: number
-          question_id?: number | null
-          user_id?: number | null
-        }
-        Update: {
-          answer_text?: string | null
-          created_at?: string
-          id?: number
-          question_id?: number | null
-          user_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_questions_question_id_fkey"
-            columns: ["question_id"]
-            isOneToOne: false
-            referencedRelation: "questions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_questions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]

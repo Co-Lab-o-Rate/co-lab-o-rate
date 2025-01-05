@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
+import { UserContext, UserContextType } from '../../context/UserContext';
+import React from "react";
 
 interface ComponentProps {
     login: ()=>void;
@@ -9,6 +11,7 @@ interface ComponentProps {
 
 const Login: FC<ComponentProps> = ({login}) => {
 
+    const { saveUser } = React.useContext(UserContext) as UserContextType
     const navigate = useNavigate();
     const [continueClicked, setContinueClicked] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
@@ -40,6 +43,7 @@ const Login: FC<ComponentProps> = ({login}) => {
                 }
             )
             if (data.session?.access_token) {
+                saveUser({ id: data.session.user.id, email: data.session.user.email || ''})
                 login();
                 navigate('/info-form')
             } else {

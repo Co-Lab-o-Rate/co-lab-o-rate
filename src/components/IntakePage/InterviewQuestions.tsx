@@ -1,4 +1,6 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import supabase from '../../config/supabaseClient';
+import LogoHeader from '../LogoHeader/LogoHeader';
 // import supabase from './config/supabaseClient'
 
 interface ComponentProps {
@@ -6,6 +8,10 @@ interface ComponentProps {
 }
 
 const InterviewQuestions: FC<ComponentProps> = () => {
+
+    useEffect(() => {
+        getQuestions();
+    }, [])
 
     const [questionCount, setQuestionCount] = useState(0);
     const [answer, setAnswer] = useState('');
@@ -29,6 +35,13 @@ const InterviewQuestions: FC<ComponentProps> = () => {
         "How did you find out about us?"
     ]
 
+    const getQuestions = async () => {
+        const { data, error } = await supabase.from('questions').select();
+
+        console.log(data);
+        console.log(error);
+    }
+
     const handleKeyDown = (e: any) => {
         e.target.style.height = 'inherit';
         e.target.style.height = `${e.target.scrollHeight}px`; 
@@ -51,6 +64,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
     
     return(
         <div>
+            <LogoHeader/>
             <div className='flex flex-col items-center mt-5'>
                 <div>
                     {questions[questionCount]}

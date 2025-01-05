@@ -8,4 +8,5 @@ export default {
   },
   plugins: [],
 }
+//TBD implement global styles for buttons
 
