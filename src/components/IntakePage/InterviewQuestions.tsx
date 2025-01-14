@@ -134,6 +134,8 @@ const InterviewQuestions: FC<ComponentProps> = () => {
   };
 
   const goToQuestion = (index: number) => {
+    console.log(questionCount===index);
+    
     getCurrentAnswer(index);
     setQuestionCount(index);
   };
@@ -168,7 +170,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
                   } 
                                       ${
                                         questionCount === index
-                                          ? "bg-blue-100"
+                                          ? "bg-cyan-400"
                                           : ""
                                       }
                                       ${
