@@ -44,6 +44,10 @@ img{
   max-width: none;
 }
 
+.survey-tracker-btn {
+  @apply p-2 cursor-pointer w-10 inline-block
+}
+
 .logo-container{
   flex-direction: column;
 }

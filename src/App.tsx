@@ -6,40 +6,35 @@ import WelcomePage from './components/IntakePage/WelcomePage';
 import {
   BrowserRouter,
   Route,
-  Routes,
+  Routes
 } from 'react-router';
-import PrivateRoutes from './util/PrivateRoutes';
 import InterviewQuestions from './components/IntakePage/InterviewQuestions';
-import UserProvider from '../src/context/UserContext';
-import { useState } from 'react';
+import AuthProtectedRoute from "./util/AuthProtectedRoute.tsx";
+import Providers from "./util/Providers.tsx";
+
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-  const login = () => {
-    setIsAuthenticated(true);
-  };
-
-  // Is this useful?
-  // const logout = () => {
-  // setIsAuthenticated(false);
-  // };
 
   return (
     <>
-      <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route element={<PrivateRoutes isAuthenticated= {isAuthenticated}/>}>
-              <Route path='/info-form' element={<InfoForm/>}/>
-              <Route path='/interview' element={<InterviewQuestions/>}/>
+            
+            <Route path="/" element={<Providers/>}>
+
+              <Route path='/' element={<WelcomePage/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/sign-up' element={<SignUpForm/>}/>
+
+              <Route element={<AuthProtectedRoute/>}>
+                <Route path='/info-form' element={<InfoForm/>}/>
+                <Route path='/interview' element={<InterviewQuestions/>}/>
+              </Route>
+
             </Route>
-            <Route path='/' element={<WelcomePage/>}/>
-            <Route path='/login' element={<Login login= {login}/>}/>
-            <Route path='/sign-up' element={<SignUpForm/>}/>
+
           </Routes>
         </BrowserRouter>
-      </UserProvider>
     </>
   )
 }

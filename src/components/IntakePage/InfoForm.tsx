@@ -1,40 +1,70 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
-import {UserContext, UserContextType} from "../../context/UserContext";
-import React from "react";
+import { useSession } from '../../context/AuthProvider';
 
 interface ComponentProps {
     //props placeholder
 }
 
-const InfoForm: FC<ComponentProps> = () => {
+interface FormData {
+    first_name?: string | null,
+    last_name?: string | null,
+    age?: string | null,
+    location?: string | null,
+    phone_number?: string | null
+}
 
-    const { user } = React.useContext(UserContext) as UserContextType;
+const InfoForm: FC<ComponentProps> = () => {
+    useEffect(() => {
+        getInfo();
+    }, [])
+
+    const auth = useSession();
+    const user = auth.session?.user    
     const navigate = useNavigate();
+
     const [isAdmin, setIsAdmin] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+    const [submitClicked, setSubmitClicked] = useState(false);
+    const [dataChanged, setDataChanged] = useState(false);
+    const [formData, setFormData] = useState<FormData>({
+        first_name: '',
+        last_name: '',
         age: '',
         location: '',
-        phoneNumber: ''
+        phone_number: ''
     });
+    
+    const getInfo = async () => {
+        try{
+            if(user){
+                const { data, error } = await supabase.from('profiles').select().eq('id', user.id);
+                if(error){
+                    console.log('Error getting form data from database:',error); 
+                } else {
+                    setFormData(data[0]);
+                }
+            }
+        }
+        catch {
+            console.log('Error in getting data');
+        }
+    }
 
     const goToInterview = () => {
         navigate('/interview');
       }
 
     const handleInputChange = (event: any) => {
-        setFormData((prevFormData) => {            
+        setDataChanged(true);
+        setFormData((prevFormData) => {
             return{
                 ...prevFormData,
                 [event.target.name]: event.target.value
             }
         })
     }
-    const [submitClicked, setSubmitClicked] = useState(false);
 
     const getInputValue = (inputType: string) => {
       const input = document.getElementById(inputType) as HTMLInputElement;
@@ -63,10 +93,13 @@ const InfoForm: FC<ComponentProps> = () => {
             phone_number: phoneNumber
         }
 
-        const saveProfile = await supabase?.from('profiles').update(payload).eq("id", user.id);
-
-        if(saveProfile?.error){
-            console.log(saveProfile.error);
+        if(dataChanged && user){
+            const saveProfile = await supabase?.from('profiles').update(payload).eq("id", user.id);
+            if(saveProfile?.error){
+                console.log(saveProfile.error);
+            } else {
+                goToInterview();
+            }
         } else {
             goToInterview();
         }
@@ -87,25 +120,25 @@ const InfoForm: FC<ComponentProps> = () => {
             <p>Thanks for signing up! We'd like to to know a little more about you...</p>
             <div className={ "mt-2"}>
                 <h6>First Name:</h6>
-                <input className={getInputValue('firstName') === '' && submitClicked ? "border-2 border-pink-600 bg-teal-100" : "bg-teal-100"}
-                id='firstName'
-                name='firstName'
+                <input className={getInputValue('first_name') === '' && submitClicked ? "border-2 border-pink-600 bg-teal-100" : "bg-teal-100"}
+                id='first_name'
+                name='first_name'
                 onChange={handleInputChange}
-                value={formData.firstName}
+                value={formData.first_name?? ''}
                 ></input>
-                <div className={getInputValue('firstName') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
+                <div className={getInputValue('first_name') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter first name
                 </div>
             </div>
             <div className="mt-2">
                 <h6>Last Name:</h6>
-                <input className={getInputValue('lastName') === '' && submitClicked ? "border-2 border-pink-600 bg-amber-200" : "bg-amber-200"}
-                id='lastName'
-                name='lastName'
+                <input className={getInputValue('last_name') === '' && submitClicked ? "border-2 border-pink-600 bg-amber-200" : "bg-amber-200"}
+                id='last_name'
+                name='last_name'
                 onChange={handleInputChange}                
-                value={formData.lastName}
+                value={formData.last_name?? ''}
                 ></input>
-                <div className={getInputValue('lastName') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
+                <div className={getInputValue('last_name') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter last name
                 </div>
             </div>
@@ -115,7 +148,7 @@ const InfoForm: FC<ComponentProps> = () => {
                 id='age'
                 name='age'
                 onChange={handleInputChange}                
-                value={formData.age}
+                value={formData.age?? ''}
                 ></input>
                 <div className={getInputValue('age') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter age
@@ -127,7 +160,7 @@ const InfoForm: FC<ComponentProps> = () => {
                 id='location'
                 name='location'
                 onChange={handleInputChange}                
-                value={formData.location}
+                value={formData.location?? ''}
                 ></input>
                  <div className={getInputValue('location') === '' && submitClicked ? "text-pink-600" : "invisible h-0"}>
                     please enter location
@@ -136,10 +169,10 @@ const InfoForm: FC<ComponentProps> = () => {
             <div className="mt-2 mb-5">
                 <h6>Phone Number:</h6>
                 <input className="bg-red-200"
-                id='phoneNumber'
-                name='phoneNumber'
+                id='phone_number'
+                name='phone_number'
                 onChange={handleInputChange}                
-                value={formData.phoneNumber}
+                value={formData.phone_number?? ''}
                 ></input>
             </div>
             <div className="">
@@ -147,7 +180,7 @@ const InfoForm: FC<ComponentProps> = () => {
                     onClick={()=> {
                         setSubmitClicked(true);
                         if(!notAllFieldsComplete()){
-                            saveInfo(isAdmin, formData.firstName, formData.lastName, formData.age, formData.location, formData.phoneNumber);
+                            saveInfo(isAdmin, formData.first_name?? '' , formData.last_name?? '', formData.age?? '', formData.location?? '', formData.phone_number?? '');
                         }
                     }}>
                     Next

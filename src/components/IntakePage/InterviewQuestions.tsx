@@ -1,47 +1,73 @@
 import { FC, useEffect, useState } from 'react'
 import supabase from '../../config/supabaseClient';
 import LogoHeader from '../LogoHeader/LogoHeader';
+import { useSession } from '../../context/AuthProvider';
+import { useNavigate } from 'react-router';
 // import supabase from './config/supabaseClient'
 
 interface ComponentProps {
    //props placeholder
 }
 
+interface Question {
+    created_at: string;
+    group_id: number | null;
+    id: number;
+    question_text: string | null;
+}
+
+interface prevAnswer {
+    id: number;
+    created_at: string;
+    question_id: number | null;
+    profile_id: string | null;
+    answer_text: string | null;
+}
+
 const InterviewQuestions: FC<ComponentProps> = () => {
 
     useEffect(() => {
         getQuestions();
+        getPrevAnswers();
     }, [])
 
-    const [questionCount, setQuestionCount] = useState(0);
-    const [answer, setAnswer] = useState('');
-    // let answerArray: string[] = [];
-    const questions: string[] =  [
-        "What drives you to create art?",
-        "How would you describe your artistic style?",
-        "What are the top challenges you face as an artist?",
-        "How have you tried to solve them?",
-        "Where do you hang out (online or offline) to meet other artist enthusiasts?",
-        "What blogs and publications do you read to discover information relevant to the art you create?",
-        "Which influencers in the art space do you follow?",
-        "What tools do you use primarily to create your art?",
-        "How are you currently promoting and monetizing your art?",
-        "Who are your clients (friends, art collectors, creative agencies, brands) & how did you originally connect with them?",
-        "Can you tell us about any collaborative projects where you created art socially with others?",
-        "What causes are you interested in supporting philanthropically?",
-        "What is the wildest boundary smashing dream you’ve experienced while sleeping?",
-        "Would you be open to participating in a longer format interview?",
-        "Would you like to be considered as a potential beta tester for our platform?",
-        "How did you find out about us?"
-    ]
+    const auth = useSession();
+    const user = auth.session?.user
+    const navigate = useNavigate();
+   
+    const [questionCount, setQuestionCount] = useState<number>(0);
+    const [answer, setAnswer] = useState<string | null>('');
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const [prevAnswers, setPrevAnswers] = useState<prevAnswer[]>([]);
 
     const getQuestions = async () => {
+        //TBD only get questions that match the user group
         const { data, error } = await supabase.from('questions').select();
-
-        console.log(data);
-        console.log(error);
+        if(data){
+            setQuestions(data);            
+        } else if (error) {
+            console.log('Error in getting questions:',error);
+        }
     }
 
+    const getPrevAnswers = async () => {
+        if(user) {            
+            const { data, error } = await supabase.from('profile_questions').select().eq('profile_id', user.id);
+            if(data){
+                const orderedAnswers = data.sort((a: any, b: any) => a.question_id - b.question_id)             
+                setPrevAnswers(orderedAnswers);
+            } else if (error) {
+                console.log('Error in getting previous answers:', error);
+            }
+        }
+    }
+
+    const getCurrentAnswer = (index?: number) => {
+        const currentAnswer = prevAnswers.filter((answer) => answer.question_id===questions[index?? 0].id)[0]?.answer_text; 
+        setAnswer(currentAnswer?? '');
+    }
+
+    //adjusts the height of the text box as text is entered
     const handleKeyDown = (e: any) => {
         e.target.style.height = 'inherit';
         e.target.style.height = `${e.target.scrollHeight}px`; 
@@ -50,36 +76,111 @@ const InterviewQuestions: FC<ComponentProps> = () => {
       }
     
     const updateAnswer = (event: any) => {
-        console.log(event.target.value);
         setAnswer(event.target.value);
     }
+
+    const alreadyAnswered = () => {
+        return prevAnswers.some((prevAnswer) => { prevAnswer.question_id===questions[questionCount].id });
+    }
     
-    // const saveAnswer = (newAnswer: string) => {
-    //     answerArray.push(newAnswer);
-    //     setAnswer(()=> {
-    //         console.log(answerArray);
-    //         return '';
-    //     })
-    // }
-    
+    const saveAnswer = async () => {
+        if(answer !== '') {
+            if(alreadyAnswered()){
+                const { error } = await supabase.from('profile_questions')
+                .update({
+                    question_id: questions[questionCount].id, 
+                    profile_id: user?.id,
+                    answer_text: answer,
+                }).eq('question_id', questions[questionCount].id);
+                if(error) {
+                    console.log('Error in saving answer:', error);
+                } else {
+                    setQuestionCount(questionCount+1);
+                    getCurrentAnswer(questionCount+1);
+                    getPrevAnswers();
+                }
+            } else {                
+                const { error } = await supabase.from('profile_questions')
+                .insert({
+                    question_id: questions[questionCount].id, 
+                    profile_id: user?.id,
+                    answer_text: answer,
+                });
+                if(error) {
+                    console.log('Error in saving answer:', error);
+                } else {
+                    setQuestionCount(questionCount+1);
+                    getCurrentAnswer(questionCount+1);
+                    getPrevAnswers();
+                }
+            }
+        }
+    }
+
+    const questionComplete = (question: Question) => {
+        const isDone = prevAnswers.some((answer) => {            
+           return answer.question_id===question.id;
+        });        
+        return isDone;
+    }
+
+    const  goToQuestion = (index: number) => {        
+        getCurrentAnswer(index);
+        setQuestionCount(index);
+    }
+
+    const goToHomePage = () => {
+        console.log('Going to home page');
+        //TBD rouet to user profile
+        navigate('/');
+    }
+       
     return(
         <div>
             <LogoHeader/>
             <div className='flex flex-col items-center mt-5'>
                 <div>
-                    {questions[questionCount]}
+                    {questions[questionCount]?.question_text}
                 </div>
                 <textarea className='bg-slate-200 text-black rounded border-solid border-2 border-black p-2 m-2 w-2/3'
-                onChange={(event)=>updateAnswer(event)}
-                onKeyDown={(event) => handleKeyDown(event)}
-                value={answer}
-                ></textarea>
+                    id='survey-answer'
+                    onChange={(event)=>updateAnswer(event)}
+                    onKeyDown={(event) => handleKeyDown(event)}
+                    value={answer || ''}
+                >
+                </textarea>
+                <div id='survey-tracker'>
+                    <h3>survey progress</h3>
+                    <div className='w-50'>
+                        {questions.map((question, index) => {
+                            return (
+                                <span 
+                                    key={index}
+                                    className={`survey-tracker-btn ${
+                                        questionComplete(question) ? 'bg-green-100' : 'bg-red-100'
+                                      } 
+                                      ${ questionCount===index ? 'bg-blue-100' : '' }
+                                      ${
+                                        index === 0 ? 'rounded-s-md' : index === questions.length - 1 ? 'rounded-e-md' : ''
+                                      }`}
+                                    onClick={() => goToQuestion(index)}
+                                >
+                                    {index + 1}
+                                </span>
+                            )
+                        })}
+                    </div>
+                </div>
+                    
                 <div>
-                    <button className='bg-red-500 text-white rounded w-20 p-3 leading-none mt-3'
-                        onClick={()=>{
-                            setQuestionCount(questionCount+1)
-                            }}>
-                        Save and Continue
+                    <button className='bg-red-500 text-white rounded w-30 p-3 leading-none mt-3'
+                        onClick={saveAnswer}>
+                        Save & Continue
+                    </button> 
+                    <button className='bg-lime-500 text-white rounded w-30 p-3 leading-none mt-3 ml-3'
+                        onClick={goToHomePage}
+                    >
+                        Skip Survey for now
                     </button>
                 </div>
             </div>
