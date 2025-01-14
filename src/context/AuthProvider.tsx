@@ -28,7 +28,7 @@ export const SessionProvider = ({ children }: Props) => {
       async (_, session) => {
         setSession(session);
         // setIsLoading(false);
-      }
+      },
     );
 
     return () => {

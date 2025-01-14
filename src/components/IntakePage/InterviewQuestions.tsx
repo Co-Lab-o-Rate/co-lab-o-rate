@@ -57,7 +57,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
         .eq("profile_id", user.id);
       if (data) {
         const orderedAnswers = data.sort(
-          (a: any, b: any) => a.question_id - b.question_id
+          (a: any, b: any) => a.question_id - b.question_id,
         );
         setPrevAnswers(orderedAnswers);
       } else if (error) {
@@ -68,7 +68,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
 
   const getCurrentAnswer = (index?: number) => {
     const currentAnswer = prevAnswers.filter(
-      (answer) => answer.question_id === questions[index ?? 0].id
+      (answer) => answer.question_id === questions[index ?? 0].id,
     )[0]?.answer_text;
     setAnswer(currentAnswer ?? "");
   };
@@ -175,8 +175,8 @@ const InterviewQuestions: FC<ComponentProps> = () => {
                                         index === 0
                                           ? "rounded-s-md"
                                           : index === questions.length - 1
-                                          ? "rounded-e-md"
-                                          : ""
+                                            ? "rounded-e-md"
+                                            : ""
                                       }`}
                   onClick={() => goToQuestion(index)}
                 >

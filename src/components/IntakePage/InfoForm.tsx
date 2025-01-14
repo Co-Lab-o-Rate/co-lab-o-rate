@@ -90,7 +90,7 @@ const InfoForm: FC<ComponentProps> = () => {
     lastName?: string,
     age?: string,
     location?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
   ) => {
     const payload = {
       admin: admin || false,
@@ -247,7 +247,7 @@ const InfoForm: FC<ComponentProps> = () => {
                   formData.last_name ?? "",
                   formData.age ?? "",
                   formData.location ?? "",
-                  formData.phone_number ?? ""
+                  formData.phone_number ?? "",
                 );
               }
             }}

@@ -1,18 +1,20 @@
-{"questions" : {
-    "01" : "What drives you to create art?",
-    "02" : "How would you describe your artistic style?",
-    "03" : "What are the top challenges you face as an artist?",
-    "04" : "How have you tried to solve them?",
-    "05" : "Where do you hang out (online or offline) to meet other artist enthusiasts?",
-    "06" : "What blogs and publications do you read to discover information relevant to the art you create?",
-    "07" : "Which influencers in the art space do you follow?",
-    "08" : "What tools do you use primarily to create your art?",
-    "09" : "How are you currently promoting and monetizing your art?",
-    "10" : "Who are your clients (friends, art collectors, creative agencies, brands) & how did you originally connect with them?",
-    "11" : "Can you tell us about any collaborative projects where you created art socially with others?",
-    "12" : "What causes are you interested in supporting philanthropically?",
-    "13" : "What is the wildest boundary smashing dream you’ve experienced while sleeping?",
-    "14" : "Would you be open to participating in a longer format interview?",
-    "15" : "Would you like to be considered as a potential beta tester for our platform?",
-    "16" : "How did you find out about us?"
-}}
+{
+  "questions": {
+    "01": "What drives you to create art?",
+    "02": "How would you describe your artistic style?",
+    "03": "What are the top challenges you face as an artist?",
+    "04": "How have you tried to solve them?",
+    "05": "Where do you hang out (online or offline) to meet other artist enthusiasts?",
+    "06": "What blogs and publications do you read to discover information relevant to the art you create?",
+    "07": "Which influencers in the art space do you follow?",
+    "08": "What tools do you use primarily to create your art?",
+    "09": "How are you currently promoting and monetizing your art?",
+    "10": "Who are your clients (friends, art collectors, creative agencies, brands) & how did you originally connect with them?",
+    "11": "Can you tell us about any collaborative projects where you created art socially with others?",
+    "12": "What causes are you interested in supporting philanthropically?",
+    "13": "What is the wildest boundary smashing dream you’ve experienced while sleeping?",
+    "14": "Would you be open to participating in a longer format interview?",
+    "15": "Would you like to be considered as a potential beta tester for our platform?",
+    "16": "How did you find out about us?"
+  }
+}
