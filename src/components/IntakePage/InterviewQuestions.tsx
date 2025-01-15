@@ -57,7 +57,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
         .eq("profile_id", user.id);
       if (data) {
         const orderedAnswers = data.sort(
-          (a: any, b: any) => a.question_id - b.question_id,
+          (a: any, b: any) => a.question_id - b.question_id
         );
         setPrevAnswers(orderedAnswers);
       } else if (error) {
@@ -68,7 +68,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
 
   const getCurrentAnswer = (index?: number) => {
     const currentAnswer = prevAnswers.filter(
-      (answer) => answer.question_id === questions[index ?? 0].id,
+      (answer) => answer.question_id === questions[index ?? 0].id
     )[0]?.answer_text;
     setAnswer(currentAnswer ?? "");
   };
@@ -134,8 +134,8 @@ const InterviewQuestions: FC<ComponentProps> = () => {
   };
 
   const goToQuestion = (index: number) => {
-    console.log(questionCount===index);
-    
+    console.log(questionCount === index);
+
     getCurrentAnswer(index);
     setQuestionCount(index);
   };
@@ -166,19 +166,19 @@ const InterviewQuestions: FC<ComponentProps> = () => {
                 <span
                   key={index}
                   className={`survey-tracker-btn ${
-                    questionComplete(question) ? "bg-green-100" : "bg-red-100"
+                    questionCount === index
+                      ? "bg-teal-400"
+                      : questionComplete(question)
+                      ? "bg-green-100"
+                      : "bg-red-100"
                   } 
-                                      ${
-                                        questionCount === index
-                                          ? "bg-cyan-400"
-                                          : ""
-                                      }
+                                     
                                       ${
                                         index === 0
                                           ? "rounded-s-md"
                                           : index === questions.length - 1
-                                            ? "rounded-e-md"
-                                            : ""
+                                          ? "rounded-e-md"
+                                          : ""
                                       }`}
                   onClick={() => goToQuestion(index)}
                 >
