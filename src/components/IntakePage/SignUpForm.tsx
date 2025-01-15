@@ -62,7 +62,7 @@ const SignUpForm: FC<ComponentProps> = () => {
       <LogoHeader />
       <h2 className="mt-6">Sign up to continue</h2>
       <div className="flex flex-col justify-center">
-        <div className="grid grid-cols-2 m-auto">
+        <div className="grid grid-cols-2 m-auto w-1/2 border-2 border-black rounded">
           <div className="m-auto">
             <h3>email</h3>
           </div>
@@ -85,7 +85,7 @@ const SignUpForm: FC<ComponentProps> = () => {
               Please enter valid email address
             </div>
           </div>
-          <div className="m-auto">
+          <div className="m-auto pb-1">
             <h3>password</h3>
           </div>
           <div>
@@ -127,7 +127,7 @@ const SignUpForm: FC<ComponentProps> = () => {
         </div>
       </div>
       <span>
-        <h4 className="inline-block"> Already Signed Up? </h4>
+        <h4 className="inline-block mt-12"> Already Signed Up? </h4>
         <button
           className="inline-block bg-emerald-200 text-black rounded w-30 p-3 leading-none mt-3 ml-3"
           onClick={() => goToLoginPage()}

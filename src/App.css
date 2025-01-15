@@ -56,7 +56,7 @@ img {
 }
 
 .logo-container {
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .logo {
@@ -116,7 +116,7 @@ img {
     font-weight: lighter;
   }
   h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: lighter;
   }
   h1 {

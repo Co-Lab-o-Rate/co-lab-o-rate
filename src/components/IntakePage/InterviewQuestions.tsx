@@ -83,6 +83,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
 
   const updateAnswer = (event: any) => {
     setAnswer(event.target.value);
+    handleKeyDown(event);
   };
 
   const alreadyAnswered = () => {
@@ -149,7 +150,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
   return (
     <div>
       <LogoHeader />
-      <div className="flex flex-col items-center mt-5">
+      <div className="flex flex-col items-center mt-10">
         <div>{questions[questionCount]?.question_text}</div>
         <textarea
           className="bg-slate-200 text-black rounded border-solid border-2 border-black p-2 m-2 w-2/3"
@@ -158,8 +159,8 @@ const InterviewQuestions: FC<ComponentProps> = () => {
           onKeyDown={(event) => handleKeyDown(event)}
           value={answer || ""}
         ></textarea>
-        <div id="survey-tracker">
-          <h3>survey progress</h3>
+        <div id="survey-tracker" className="mt-12">
+          <h3 className="mb-3" >survey progress</h3>
           <div className="w-50">
             {questions.map((question, index) => {
               return (
@@ -172,14 +173,13 @@ const InterviewQuestions: FC<ComponentProps> = () => {
                       ? "bg-green-100"
                       : "bg-red-100"
                   } 
-                                     
-                                      ${
-                                        index === 0
-                                          ? "rounded-s-md"
-                                          : index === questions.length - 1
-                                          ? "rounded-e-md"
-                                          : ""
-                                      }`}
+                    ${
+                    index === 0
+                        ? "rounded-s-md"
+                        : index === questions.length - 1
+                        ? "rounded-e-md"
+                        : ""
+                    }`}
                   onClick={() => goToQuestion(index)}
                 >
                   {index + 1}
@@ -188,8 +188,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
             })}
           </div>
         </div>
-
-        <div>
+        <div className="mt-6">
           <button
             className="bg-red-500 text-white rounded w-30 p-3 leading-none mt-3"
             onClick={saveAnswer}

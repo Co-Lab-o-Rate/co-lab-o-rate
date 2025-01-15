@@ -7,18 +7,18 @@ const LogoHeader = () => {
     <>
       <div className="flex justify-center">
         <div className="logo-container flex justify-center">
-          <span className="w-1/3">
-            <img className="object-cover h-40" src={logoLeft} />
+          <span className="w-1/3 h-[8%] mt-1">
+            <img className="w-full pt-6" src={logoLeft} />
           </span>
-          <span className="pl-8">
+          <span className="w-1/3 h-[8%] mt-1">
             <img
               src={logoCenter}
-              className="object-cover h-52 logo"
+              className="w-full logo"
               alt="logo"
             />
           </span>
-          <span className="w-1/3 h-40">
-            <img className="object-cover h-40" src={logoRight} />
+          <span className="w-1/3 h-[8%] mt-1">
+            <img className="w-full pt-8" src={logoRight} />
           </span>
         </div>
       </div>
