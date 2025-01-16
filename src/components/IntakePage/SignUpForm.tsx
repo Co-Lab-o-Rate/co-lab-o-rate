@@ -39,7 +39,7 @@ const SignUpForm: FC<ComponentProps> = () => {
           data: {
             full_name: formData.full_name,
           },
-          emailRedirectTo: "https://co-lab-o-rate.com/login",
+          emailRedirectTo: "https://co-lab-o-rate.com",
         },
       });
       if (error) {
