@@ -60,9 +60,12 @@ const Login: FC<ComponentProps> = () => {
   return (
     <>
       <LogoHeader />
-      <h2 className="mt-6">Sign in to continue</h2>
+      <span>
+        <h2 className="inline-block mt-6 mr-2 bg-emerald-200 rounded-t-md w-30 p-3 border-t-2 border-l-2 border-r-2 border-emerald-500">Login</h2>
+        <h2 className="inline-block mt-6">to continue</h2>
+      </span>
       <div className="flex flex-col justify-center">
-        <div className="grid grid-cols-2 m-auto w-1/2 border-2 border-black rounded">
+        <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
           <div className="m-auto">
             <h3>email</h3>
           </div>
@@ -71,7 +74,7 @@ const Login: FC<ComponentProps> = () => {
               id="email"
               type="text"
               name="email"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600"
+              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
               onChange={handleInputChange}
               value={formData.email}
             ></input>
@@ -93,7 +96,7 @@ const Login: FC<ComponentProps> = () => {
               id="password"
               type="password"
               name="password"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600"
+              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
               onChange={handleInputChange}
               value={formData.password}
             ></input>
@@ -118,9 +121,9 @@ const Login: FC<ComponentProps> = () => {
         </div>
       </div>
       <span>
-        <h4 className="inline-block mt-12"> Haven't signed up yet? </h4>
+        <h4 className="inline-block mt-12"> Not signed up? </h4>
         <button
-          className="inline-block bg-yellow-100 text-black rounded w-30 p-3 leading-none mt-3 ml-3 border-2 border-blue-300"
+          className="inline-block bg-yellow-100 text-black rounded w-30 p-3 leading-none mt-3 ml-3 border-2 border-yellow-500"
           onClick={() => goToSignUpPage()}
         >
           Sign Up

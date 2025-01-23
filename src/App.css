@@ -24,20 +24,20 @@ p {
 }
 
 h4 {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: lighter;
 }
 
 h3 {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: lighter;
 }
 h2 {
-  font-size: 3rem;
+  font-size: 1.75rem;
   font-weight: lighter;
 }
 h1 {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: bolder;
 }
 
@@ -49,6 +49,10 @@ hr {
 
 img {
   max-width: none;
+}
+
+.login-signup-header {
+  font-size: 2rem;
 }
 
 .survey-tracker-btn {
@@ -85,6 +89,10 @@ img {
 
 .read-the-docs {
   color: #888;
+}
+
+.email-pass-inputs-container {
+  margin: auto;
 }
 
 @media only screen and (min-width: 800px) {
@@ -133,5 +141,10 @@ img {
   .logo-container {
     flex-direction: row;
     width: 600px;
+  }
+
+  .email-pass-inputs-container {
+    margin: auto;
+    width: 50%;
   }
 }
