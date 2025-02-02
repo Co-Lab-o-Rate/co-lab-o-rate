@@ -6,14 +6,14 @@ import WelcomePage from "./components/IntakePage/WelcomePage";
 import { BrowserRouter, Route, Routes } from "react-router";
 import InterviewQuestions from "./components/IntakePage/InterviewQuestions";
 import AuthProtectedRoute from "./util/AuthProtectedRoute.tsx";
-import Providers from "./util/Providers.tsx";
+import Provider from "./util/Provider.tsx";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Providers />}>
+          <Route path="/" element={<Provider />}>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUpForm />} />

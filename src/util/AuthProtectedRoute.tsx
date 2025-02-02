@@ -1,12 +1,11 @@
 import { Outlet } from "react-router";
-import NotFoundPage from "./NotFoundPage";
-import { useSession } from "../context/AuthProvider";
+import UnauthorizedPage from "./UnauthorizedPage";
+import { useSession } from "../context/SessionContextProvider";
 
 const AuthProtectedRoute = () => {
   const { session } = useSession();
   if (!session) {
-    // or you can redirect to a different page and show a message
-    return <NotFoundPage />;
+    return <UnauthorizedPage />;
   }
   return <Outlet />;
 };

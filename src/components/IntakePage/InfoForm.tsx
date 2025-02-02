@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
-import { useSession } from "../../context/AuthProvider";
+import { useSession } from "../../context/SessionContextProvider";
 
 interface ComponentProps {
   //props placeholder

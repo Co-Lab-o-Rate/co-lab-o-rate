@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 
-const NotFoundPage: React.FC = () => {
+const UnauthorizedPage: React.FC = () => {
   return (
     <main>
       <section className="main-container">
-        <h1 className="header-text">404 Page Not Found</h1>
+        <h1 className="header-text">You are not authorized to view this page, please login.</h1>
         <Link to="/">Go back to Home</Link>
       </section>
     </main>
   );
 };
 
-export default NotFoundPage;
+export default UnauthorizedPage;
