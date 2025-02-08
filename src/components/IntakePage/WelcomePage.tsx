@@ -9,7 +9,7 @@ const WelcomePage = () => {
   };
 
   const goToVideoPage = () => {
-    console.log("TBD go to video page");
+    navigate("/video");
   };
 
   return (
