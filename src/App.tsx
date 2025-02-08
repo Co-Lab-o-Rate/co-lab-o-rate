@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import InterviewQuestions from "./components/IntakePage/InterviewQuestions";
 import AuthProtectedRoute from "./util/AuthProtectedRoute.tsx";
 import Provider from "./util/Provider.tsx";
+import VideoPage from "./components/VideoPage/VideoPage.tsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUpForm />} />
+            <Route path="/video" element={<VideoPage />} />
 
             <Route element={<AuthProtectedRoute />}>
               <Route path="/info-form" element={<InfoForm />} />
