@@ -46,6 +46,12 @@ const SignUpForm: FC<ComponentProps> = () => {
         console.log("Error signing up!");
       }
       alert("Check your email for verification link");
+      setFormData({
+        full_name: "",
+        email: "",
+        password: "",
+      })
+      setContinueClicked(false);
     } catch (error) {
       alert(error);
     }

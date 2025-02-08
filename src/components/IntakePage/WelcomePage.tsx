@@ -4,8 +4,8 @@ import LogoHeader from "../LogoHeader/LogoHeader";
 const WelcomePage = () => {
   const navigate = useNavigate();
 
-  const goToLoginPage = () => {
-    navigate("/login");
+  const goToSignUpPage = () => {
+    navigate("/sign-up");
   };
 
   const goToVideoPage = () => {
@@ -36,9 +36,9 @@ const WelcomePage = () => {
         <div className="flex flex-row justify-center">
           <button
             className="bg-red-500 text-white p-5 rounded m-2"
-            onClick={() => goToLoginPage()}
+            onClick={() => goToSignUpPage()}
           >
-            Login/ Sign Up
+            Login / Sign Up
           </button>
           <button
             className="bg-red-500 text-white p-5 rounded m-2"
