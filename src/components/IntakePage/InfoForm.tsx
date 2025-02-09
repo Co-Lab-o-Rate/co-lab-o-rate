@@ -60,7 +60,7 @@ const InfoForm: FC<ComponentProps> = () => {
 
   const handleInputChange = (event: any) => {
     setDataChanged(true);
-    setFormData((prevFormData) => {
+    setFormData((prevFormData) => {      
       return {
         ...prevFormData,
         [event.target.name]: event.target.value,
@@ -72,6 +72,21 @@ const InfoForm: FC<ComponentProps> = () => {
     const input = document.getElementById(inputType) as HTMLInputElement;
     return input ? input.value : null;
   };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    setSubmitClicked(true);
+    if (!notAllFieldsComplete()) {
+      saveInfo(
+        isAdmin,
+        formData.first_name ?? "",
+        formData.last_name ?? "",
+        formData.age ?? "",
+        formData.location ?? "",
+        formData.phone_number ?? "",
+      );
+    }
+  }
 
   const notAllFieldsComplete = () => {
     const requiredFields = [
@@ -91,7 +106,7 @@ const InfoForm: FC<ComponentProps> = () => {
     age?: string,
     location?: string,
     phoneNumber?: string,
-  ) => {
+  ) => {    
     const payload = {
       admin: admin || false,
       first_name: firstName,
@@ -99,7 +114,7 @@ const InfoForm: FC<ComponentProps> = () => {
       age: age,
       location: location,
       phone_number: phoneNumber,
-    };
+    };    
 
     if (dataChanged && user) {
       const saveProfile = await supabase
@@ -119,17 +134,7 @@ const InfoForm: FC<ComponentProps> = () => {
   return (
     <>
       <LogoHeader />
-      <div className="flex flex-col">
-        <div className="invisible">
-          <h6>Admin?</h6>
-          <input
-            type="checkbox"
-            name="admin"
-            onChange={() => {
-              setIsAdmin(true);
-            }}
-          ></input>
-        </div>
+      <form className="flex flex-col" onSubmit={handleSubmit}>
         <p>
           Thanks for signing up! We'd like to to know a little more about you...
         </p>
@@ -238,24 +243,12 @@ const InfoForm: FC<ComponentProps> = () => {
         <div className="">
           <button
             className="bg-red-500 text-white rounded w-20 p-3 leading-none mt-3"
-            onClick={() => {
-              setSubmitClicked(true);
-              if (!notAllFieldsComplete()) {
-                saveInfo(
-                  isAdmin,
-                  formData.first_name ?? "",
-                  formData.last_name ?? "",
-                  formData.age ?? "",
-                  formData.location ?? "",
-                  formData.phone_number ?? "",
-                );
-              }
-            }}
+            type="submit"
           >
             Next
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 };
