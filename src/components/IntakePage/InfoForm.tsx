@@ -3,12 +3,15 @@ import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
 import { useSession } from "../../context/SessionContextProvider";
+import TermsAndConditions from '../../assets/Terms_and_Conditions.pdf';
+import PrivacyPolicy from '../../assets/Privacy_Policy.pdf';
 
 interface ComponentProps {
   //props placeholder
 }
 
 interface FormData {
+  admin?: boolean | null;
   first_name?: string | null;
   last_name?: string | null;
   age?: string | null;
@@ -25,15 +28,17 @@ const InfoForm: FC<ComponentProps> = () => {
   const user = auth.session?.user;
   const navigate = useNavigate();
 
-  const [isAdmin, setIsAdmin] = useState(false);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [dataChanged, setDataChanged] = useState(false);
+  const [termsAgree, setTermsAgree] = useState(false);
+  const [consentAgree, setConsentAgree] = useState(false);
   const [formData, setFormData] = useState<FormData>({
+    admin: false,
     first_name: "",
     last_name: "",
     age: "",
     location: "",
-    phone_number: "",
+    phone_number: ""
   });
 
   const getInfo = async () => {
@@ -58,12 +63,21 @@ const InfoForm: FC<ComponentProps> = () => {
     navigate("/interview");
   };
 
+  const handleCheckBox = (event: any) => {
+    setDataChanged(true);
+    if(event.target.name==='terms_agree'){
+      setTermsAgree(!termsAgree);
+    } else if(event.target.name==='consent_agree'){
+      setConsentAgree(!consentAgree);
+    }
+  }
+
   const handleInputChange = (event: any) => {
     setDataChanged(true);
-    setFormData((prevFormData) => {      
+    setFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value
       };
     });
   };
@@ -74,11 +88,11 @@ const InfoForm: FC<ComponentProps> = () => {
   };
 
   const handleSubmit = (event: any) => {
-    event.preventDefault();
+    event.preventDefault();    
     setSubmitClicked(true);
     if (!notAllFieldsComplete()) {
       saveInfo(
-        isAdmin,
+        formData.admin ?? false,
         formData.first_name ?? "",
         formData.last_name ?? "",
         formData.age ?? "",
@@ -88,15 +102,15 @@ const InfoForm: FC<ComponentProps> = () => {
     }
   }
 
-  const notAllFieldsComplete = () => {
+  const notAllFieldsComplete = () => {    
     const requiredFields = [
       "firstName",
       "lastName",
       "age",
       "location",
-      "email",
+      "email"
     ];
-    return requiredFields.some((field) => getInputValue(field) === "");
+    return requiredFields.some((field) => getInputValue(field) === "") || !termsAgree || !consentAgree ;
   };
 
   const saveInfo = async (
@@ -108,7 +122,7 @@ const InfoForm: FC<ComponentProps> = () => {
     phoneNumber?: string,
   ) => {    
     const payload = {
-      admin: admin || false,
+      admin: admin,
       first_name: firstName,
       last_name: lastName,
       age: age,
@@ -134,7 +148,7 @@ const InfoForm: FC<ComponentProps> = () => {
   return (
     <>
       <LogoHeader />
-      <form className="flex flex-col" onSubmit={handleSubmit}>
+      <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <p>
           Thanks for signing up! We'd like to to know a little more about you...
         </p>
@@ -240,6 +254,36 @@ const InfoForm: FC<ComponentProps> = () => {
             value={formData.phone_number ?? ""}
           ></input>
         </div>
+        <div>
+          <input type="checkbox" id="terms_agree" className="mr-2" name="terms_agree" checked={termsAgree} onChange={handleCheckBox}></input>
+          <p className="inline-block">agree to the </p>
+          <a href={TermsAndConditions} target="_blank">Terms and Conditions </a>
+          <p className="inline-block">and</p>
+          <a href={PrivacyPolicy} target="_blank"> Privacy Policy.</a>
+          <div
+            className={
+             !termsAgree && submitClicked
+                ? "text-pink-600"
+                : "invisible h-0"
+            }
+          >
+            please check box to agree
+          </div>
+        </div>
+        <div>
+          <input type="checkbox" id="consent_agree" className="mr-2" name="consent_agree" checked={consentAgree} onChange={handleCheckBox}></input>
+          <p className="inline-block">I consent to receive SMS and acknowledge carrier fees may apply.</p>
+          <div
+            className={
+             !consentAgree && submitClicked
+                ? "text-pink-600"
+                : "invisible h-0"
+            }
+          >
+            please check box to agree
+          </div>
+        </div>
+       
         <div className="">
           <button
             className="bg-red-500 text-white rounded w-20 p-3 leading-none mt-3"
