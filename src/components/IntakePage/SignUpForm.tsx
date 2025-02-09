@@ -30,6 +30,17 @@ const SignUpForm: FC<ComponentProps> = () => {
     });
   };
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    setContinueClicked(true);
+    if (formData.password.length <= 6) {
+      setPasswordInvalid(true);
+    } else if (validateEmail(formData.email)) {
+      setPasswordInvalid(false);
+      handleSignUp();
+    }
+  }
+
   const handleSignUp = async () => {
     try {
       const { error } = await supabase.auth.signUp({
@@ -39,7 +50,7 @@ const SignUpForm: FC<ComponentProps> = () => {
           data: {
             full_name: formData.full_name,
           },
-          emailRedirectTo: "https://co-lab-o-rate.com",
+          emailRedirectTo: "https://co-lab-o-rate.com/info-form",
         },
       });
       if (error) {
@@ -70,7 +81,7 @@ const SignUpForm: FC<ComponentProps> = () => {
         <h2 className="mt-6 bg-yellow-100 rounded-t-md w-30 p-3 border-t-2 border-l-2 border-r-2 border-yellow-500">Sign Up</h2>
         <h2 className="mt-6 p-3">to continue</h2>
       </span>      
-        <div className="flex flex-col justify-center">
+      <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
           <div className="m-auto">
             <h3>email</h3>
@@ -120,21 +131,13 @@ const SignUpForm: FC<ComponentProps> = () => {
         <div>
           <button
             className="bg-red-500 text-white rounded w-20 p-3 leading-none mt-3"
-            onClick={() => {
-              setContinueClicked(true);
-              if (formData.password.length <= 6) {
-                setPasswordInvalid(true);
-              } else if (validateEmail(formData.email)) {
-                setPasswordInvalid(false);
-                handleSignUp();
-              }
-            }}
+            type="submit"
           >
             {" "}
             submit{" "}
           </button>
         </div>
-      </div>
+      </form>
       <span>
         <h4 className="inline-block mt-12"> Already Signed Up? </h4>
         <button

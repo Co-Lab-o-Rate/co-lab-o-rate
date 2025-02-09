@@ -34,6 +34,14 @@ const Login: FC<ComponentProps> = () => {
     });
   };
 
+  const handleSubmit = (event:any) => {
+    event.preventDefault();
+    setContinueClicked(true);
+    if (validateEmail(formData.email)) {
+      handleLogIn();
+    }
+  }
+
   const handleLogIn = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -64,7 +72,7 @@ const Login: FC<ComponentProps> = () => {
         <h2 className="inline-block mt-6 mr-2 bg-emerald-200 rounded-t-md w-30 p-3 border-t-2 border-l-2 border-r-2 border-emerald-500">Login</h2>
         <h2 className="inline-block mt-6">to continue</h2>
       </span>
-      <div className="flex flex-col justify-center">
+      <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
           <div className="m-auto">
             <h3>email</h3>
@@ -108,18 +116,13 @@ const Login: FC<ComponentProps> = () => {
         <div>
           <button
             className="bg-red-500 text-white rounded w-20 p-3 leading-none mt-3"
-            onClick={() => {
-              setContinueClicked(true);
-              if (validateEmail(formData.email)) {
-                handleLogIn();
-              }
-            }}
+            type="submit"
           >
             {" "}
             submit{" "}
           </button>
         </div>
-      </div>
+      </form>
       <span>
         <h4 className="inline-block mt-12"> Not signed up? </h4>
         <button
