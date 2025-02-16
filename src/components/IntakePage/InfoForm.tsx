@@ -257,7 +257,7 @@ const InfoForm: FC<ComponentProps> = () => {
         <div>
           <input type="checkbox" id="terms_agree" className="mr-2" name="terms_agree" checked={termsAgree} onChange={handleCheckBox}></input>
           <p className="inline-block">I agree to the </p>
-          <a href={TermsAndConditions} target="_blank" className="font-bold">Terms and Conditions </a>
+          <a href={TermsAndConditions} target="_blank" className="font-bold"> Terms and Conditions </a>
           <p className="inline-block">and</p>
           <a href={PrivacyPolicy} target="_blank" className="font-bold"> Privacy Policy.</a>
           <div

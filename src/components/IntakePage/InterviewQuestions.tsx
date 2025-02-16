@@ -86,15 +86,15 @@ const InterviewQuestions: FC<ComponentProps> = () => {
     handleKeyDown(event);
   };
 
-  const alreadyAnswered = () => {
+  const alreadyAnswered = () => { 
     return prevAnswers.some((prevAnswer) => {
-      prevAnswer.question_id === questions[questionCount].id;
+      return prevAnswer.question_id === questions[questionCount].id;
     });
   };
 
   const saveAnswer = async () => {
-    if (answer !== "") {
-      if (alreadyAnswered()) {
+    if (answer !== "") {      
+      if (alreadyAnswered()) {        
         const { error } = await supabase
           .from("profile_questions")
           .update({
@@ -111,6 +111,8 @@ const InterviewQuestions: FC<ComponentProps> = () => {
           getPrevAnswers();
         }
       } else {
+        console.log('in not already answered');
+
         const { error } = await supabase.from("profile_questions").insert({
           question_id: questions[questionCount].id,
           profile_id: user?.id,
@@ -135,8 +137,6 @@ const InterviewQuestions: FC<ComponentProps> = () => {
   };
 
   const goToQuestion = (index: number) => {
-    console.log(questionCount === index);
-
     getCurrentAnswer(index);
     setQuestionCount(index);
   };

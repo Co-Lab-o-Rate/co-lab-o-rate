@@ -21,17 +21,15 @@ const WelcomePage = () => {
         <br /> <br />
         Co-Lab-o-Rate,
         <br /> <br />
-        an online platform
+        a virtual art lab
         <br /> <br />
-        where artists
+        where co-creative games
         <br /> <br />
-        participate in
+        are engineered into
         <br /> <br />
-        collaborative drawing games
+        monetizable products
         <br /> <br />
-        and monetize their artwork
-        <br /> <br />
-        into products.
+        and market insights.
         <br /> <br />
         <div className="flex flex-row justify-center">
           <button
@@ -47,6 +45,10 @@ const WelcomePage = () => {
             Go to Video
           </button>
         </div>
+      </div>
+      <div className="bottom-0 mt-20">
+        Contact Us: 
+        <a className="font-bold" href="mailto:hello@co-lab-o-rate.com" target="_self"> hello@co-lab-o-rate.com</a>
       </div>
     </>
   );
