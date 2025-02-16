@@ -1,7 +1,13 @@
 import React from "react";
 import LogoHeader from "../LogoHeader/LogoHeader";
+import { useNavigate } from "react-router";
 
 const VideoPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const goToSignUp = () => {
+    navigate('/sign-up')
+  }
   return (
     <>
     <LogoHeader />
@@ -18,6 +24,14 @@ const VideoPage: React.FC = () => {
         </div>
         <script src="https://player.vimeo.com/api/player.js"></script>
       </div>
+    </div>
+    <div>
+    <button
+            className="inline-block bg-yellow-100 text-black rounded w-30 p-3 leading-none mt-3 ml-3 border-2 border-yellow-500"
+            onClick={goToSignUp}
+          >
+            Start!
+          </button>
     </div>
     </>
   );
