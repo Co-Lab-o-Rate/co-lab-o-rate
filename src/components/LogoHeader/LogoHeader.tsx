@@ -52,8 +52,10 @@ const LogoHeader = () => {
           </div>
         </div>
         <div className="flex-1">
-          <div className={loggedIn ? 'cursor-pointer' : 'hidden'} onClick={logout}>
-            logout
+          <div className={loggedIn ? 'cursor-pointer' : 'hidden'} >
+            <button className="inline-block bg-yellow-100 text-black rounded-xl w-30 p-3 leading-none mt-3 ml-3 border-2 border-yellow-500" onClick={logout}>
+              logout
+            </button>
           </div>
         </div>
       </div>

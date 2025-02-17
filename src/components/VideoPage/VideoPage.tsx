@@ -27,7 +27,7 @@ const VideoPage: React.FC = () => {
     </div>
     <div>
     <button
-            className="inline-block bg-yellow-100 text-black rounded w-30 p-3 leading-none mt-3 ml-3 border-2 border-yellow-500"
+            className="inline-block bg-yellow-100 text-black rounded-xl w-30 p-3 leading-none mt-3 ml-3 border-2 border-yellow-500"
             onClick={goToSignUp}
           >
             Start!

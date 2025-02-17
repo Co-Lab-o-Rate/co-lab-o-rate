@@ -33,13 +33,13 @@ const WelcomePage = () => {
         <br /> <br />
         <div className="flex flex-row justify-center">
           <button
-            className="bg-red-500 text-white p-5 rounded m-2"
+            className="bg-red-500 text-white p-5 rounded-xl m-2"
             onClick={() => goToSignUpPage()}
           >
             Login / Sign Up
           </button>
           <button
-            className="bg-red-500 text-white p-5 rounded m-2"
+            className="bg-red-500 text-white p-3 rounded-xl m-2"
             onClick={() => goToVideoPage()}
           >
             Go to Video

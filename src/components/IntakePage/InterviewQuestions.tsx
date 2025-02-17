@@ -188,6 +188,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
             })}
           </div>
         </div>
+        <div className="mt-2">Click numbers to revisit a question.</div>
         <div className="mt-6">
           <button
             className="bg-red-500 text-white rounded w-30 p-3 leading-none mt-3"

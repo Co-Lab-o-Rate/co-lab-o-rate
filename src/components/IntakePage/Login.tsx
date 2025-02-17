@@ -68,9 +68,9 @@ const Login: FC<ComponentProps> = () => {
   return (
     <>
       <LogoHeader />
-      <span>
-        <h2 className="inline-block mt-6 mr-2 bg-emerald-200 rounded-t-md w-30 p-3 border-t-2 border-l-2 border-r-2 border-emerald-500">Login</h2>
-        <h2 className="inline-block mt-6">to continue</h2>
+      <span className="flex flex-row justify-self-center login-signup-header h-[5rem]">
+        <h2 className="inline-block mt-6 mr-2 bg-emerald-200 rounded-t-md w-30 p-2 pt-0 pb-0 border-t-2 border-l-2 border-r-2 border-emerald-500">Login</h2>
+        <h2 className="inline-block p-2 pt-0 pb-0 mt-6">to continue</h2>
       </span>
       <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
@@ -82,7 +82,7 @@ const Login: FC<ComponentProps> = () => {
               id="email"
               type="text"
               name="email"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
+              className="bg-emerald-200 m-5 p-1 border-2 border-emerald-500 w-[80%]"
               onChange={handleInputChange}
               value={formData.email}
             ></input>
@@ -104,7 +104,7 @@ const Login: FC<ComponentProps> = () => {
               id="password"
               type="password"
               name="password"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
+              className="bg-emerald-200 m-5 p-1 border-2 border-emerald-500 w-[80%]"
               onChange={handleInputChange}
               value={formData.password}
             ></input>

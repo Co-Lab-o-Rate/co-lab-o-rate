@@ -77,9 +77,9 @@ const SignUpForm: FC<ComponentProps> = () => {
   return (
     <>
       <LogoHeader />
-      <span className="flex flex-row justify-self-center login-signup-header">
-        <h2 className="mt-6 bg-yellow-100 rounded-t-md w-30 p-3 border-t-2 border-l-2 border-r-2 border-yellow-500">Sign Up</h2>
-        <h2 className="mt-6 p-3">to continue</h2>
+      <span className="flex flex-row justify-self-center login-signup-header h-[5rem]">
+        <h2 className="mt-6 bg-yellow-100 rounded-t-md w-30 p-2 pt-0 pb-0 border-t-2 border-l-2 border-r-2 border-yellow-500">Sign Up</h2>
+        <h2 className="mt-6 p-2 pt-0 pb-0">to continue</h2>
       </span>      
       <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
@@ -91,7 +91,7 @@ const SignUpForm: FC<ComponentProps> = () => {
               id="email"
               type="text"
               name="email"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
+              className="bg-yellow-100 m-5 p-1 border-2 border-yellow-500 w-[80%]"
               onChange={handleInputChange}
               value={formData.email}
             ></input>
@@ -113,7 +113,7 @@ const SignUpForm: FC<ComponentProps> = () => {
               id="password"
               type="password"
               name="password"
-              className="bg-teal-100 m-5 p-1 border-2 border-blue-600 w-[80%]"
+              className="bg-yellow-100 m-5 p-1 border-2 border-yellow-500 w-[80%]"
               onChange={handleInputChange}
               value={formData.password}
             ></input>
@@ -138,14 +138,18 @@ const SignUpForm: FC<ComponentProps> = () => {
           </button>
         </div>
       </form>
-      <span>
-        <h4 className="inline-block mt-12"> Already Signed Up? </h4>
-        <button
-          className="inline-block bg-emerald-200 text-black rounded w-30 p-3 leading-none mt-3 ml-3 border-2 border-emerald-500"
+      <span className="flex justify-center mt-12 align-middle ">
+        <h4 className="ml-0 mr-0"> Already Signed Up? </h4>
+        <span className="relative flex w-30 h-10 ml-4">
+          <span className="cursor-pointer absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"
+          onClick={() => goToLoginPage()}></span>
+          <button
+          className="p-2 bg-emerald-200 text-black rounded leading-none border-2 border-emerald-500"
           onClick={() => goToLoginPage()}
-        >
+          >
           Login
-        </button>
+          </button>        
+        </span>
       </span>
     </>
   );

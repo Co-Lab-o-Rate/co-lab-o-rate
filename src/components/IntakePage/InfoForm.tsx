@@ -50,8 +50,10 @@ const InfoForm: FC<ComponentProps> = () => {
           .eq("id", user.id);
         if (error) {
           console.log("Error getting form data from database:", error);
-        } else {
+        } else if (data[0]) {
           setFormData(data[0]);
+          setConsentAgree(data[0].agree_sms || false);
+          setTermsAgree(data[0].agree_terms || false)
         }
       }
     } catch {
@@ -98,6 +100,8 @@ const InfoForm: FC<ComponentProps> = () => {
         formData.age ?? "",
         formData.location ?? "",
         formData.phone_number ?? "",
+        termsAgree,
+        consentAgree
       );
     }
   }
@@ -120,6 +124,8 @@ const InfoForm: FC<ComponentProps> = () => {
     age?: string,
     location?: string,
     phoneNumber?: string,
+    termsAgree?: boolean,
+    consentAgree?: boolean
   ) => {    
     const payload = {
       admin: admin,
@@ -128,6 +134,8 @@ const InfoForm: FC<ComponentProps> = () => {
       age: age,
       location: location,
       phone_number: phoneNumber,
+      agree_terms: termsAgree,
+      agree_sms: consentAgree
     };    
 
     if (dataChanged && user) {
@@ -150,7 +158,10 @@ const InfoForm: FC<ComponentProps> = () => {
       <LogoHeader />
       <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <p>
-          Thanks for signing up! We'd like to to know a little more about you...
+          Thanks for signing up! 
+        </p>
+        <p>
+        We'd like to know a little more about you...
         </p>
         <div className={"mt-2"}>
           <h6>First Name:</h6>
