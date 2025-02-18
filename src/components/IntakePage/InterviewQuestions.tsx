@@ -94,7 +94,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
 
   const saveAnswer = async () => {
     if (answer !== "") {      
-      if (alreadyAnswered()) {        
+      if (alreadyAnswered()) {                
         const { error } = await supabase
           .from("profile_questions")
           .update({
@@ -111,8 +111,6 @@ const InterviewQuestions: FC<ComponentProps> = () => {
           getPrevAnswers();
         }
       } else {
-        console.log('in not already answered');
-
         const { error } = await supabase.from("profile_questions").insert({
           question_id: questions[questionCount].id,
           profile_id: user?.id,
