@@ -1,7 +1,21 @@
 import { useNavigate } from "react-router";
 import LogoHeader from "../LogoHeader/LogoHeader";
+import { useSession } from "../../context/SessionContextProvider";
 
 const WelcomePage = () => {
+
+  // useEffect(() => {    
+  //   if(session.session){
+  //     goToHomePage()
+  //   }
+  // }, [])
+
+  const session = useSession();
+
+
+  const goToHomePage = () => {
+    navigate('/home')
+  }
   const navigate = useNavigate();
 
   const goToSignUpPage = () => {
