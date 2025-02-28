@@ -8,6 +8,7 @@ import InterviewQuestions from "./components/IntakePage/InterviewQuestions";
 import AuthProtectedRoute from "./util/AuthProtectedRoute.tsx";
 import Provider from "./util/Provider.tsx";
 import VideoPage from "./components/VideoPage/VideoPage.tsx";
+import HomePage from "./components/HomePage/HomePage.tsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route element={<AuthProtectedRoute />}>
               <Route path="/info-form" element={<InfoForm />} />
               <Route path="/interview" element={<InterviewQuestions />} />
+              <Route path="/home" element={<HomePage />} />
             </Route>
           </Route>
         </Routes>
