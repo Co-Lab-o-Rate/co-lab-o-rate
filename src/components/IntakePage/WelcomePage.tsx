@@ -1,24 +1,9 @@
 import { useNavigate } from "react-router";
 import LogoHeader from "../LogoHeader/LogoHeader";
-import { useSession } from "../../context/SessionContextProvider";
-import { useEffect } from "react";
 
 const WelcomePage = () => {
-
-  useEffect(() => {    
-    if(session.session){
-      goToHomePage()
-    }
-  }, [])
-
-  const session = useSession();
-
-
-  const goToHomePage = () => {
-    navigate('/home')
-  }
   const navigate = useNavigate();
-
+  
   const goToSignUpPage = () => {
     navigate("/sign-up");
   };

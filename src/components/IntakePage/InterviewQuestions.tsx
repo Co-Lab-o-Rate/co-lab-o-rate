@@ -140,9 +140,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
   };
 
   const goToHomePage = () => {
-    console.log("Going to home page");
-    //TBD route to user profile
-    navigate("/");
+    navigate("/home");
   };
 
   return (

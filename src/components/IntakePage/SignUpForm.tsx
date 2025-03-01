@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import LogoHeader from "../LogoHeader/LogoHeader";
 import { useNavigate } from "react-router";
+import { useSession } from "../../context/SessionContextProvider";
 
 interface ComponentProps {
   //props placeholder
@@ -9,6 +10,19 @@ interface ComponentProps {
 
 const SignUpForm: FC<ComponentProps> = () => {
   const navigate = useNavigate();
+
+  const session = useSession();
+
+  useEffect(() => {
+    if (session.session) {
+      goToInfoPage();
+    }
+  }, []);
+
+  const goToInfoPage = () => {
+    navigate("/info-form");
+  };
+
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -39,7 +53,7 @@ const SignUpForm: FC<ComponentProps> = () => {
       setPasswordInvalid(false);
       handleSignUp();
     }
-  }
+  };
 
   const handleSignUp = async () => {
     try {
@@ -61,7 +75,7 @@ const SignUpForm: FC<ComponentProps> = () => {
         full_name: "",
         email: "",
         password: "",
-      })
+      });
       setContinueClicked(false);
     } catch (error) {
       alert(error);
@@ -78,9 +92,11 @@ const SignUpForm: FC<ComponentProps> = () => {
     <>
       <LogoHeader />
       <span className="flex flex-row justify-self-center login-signup-header h-[5rem]">
-        <h2 className="mt-6 bg-yellow-100 rounded-t-md w-30 p-2 pt-0 pb-0 border-t-2 border-l-2 border-r-2 border-yellow-500">Sign Up</h2>
+        <h2 className="mt-6 bg-yellow-100 rounded-t-md w-30 p-2 pt-0 pb-0 border-t-2 border-l-2 border-r-2 border-yellow-500">
+          Sign Up
+        </h2>
         <h2 className="mt-6 p-2 pt-0 pb-0">to continue</h2>
-      </span>      
+      </span>
       <form className="flex flex-col justify-center" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 border-2 border-black rounded email-pass-inputs-container">
           <div className="m-auto">
@@ -141,14 +157,16 @@ const SignUpForm: FC<ComponentProps> = () => {
       <span className="flex justify-center mt-12 align-middle ">
         <h4 className="ml-0 mr-0"> Already Signed Up? </h4>
         <span className="relative flex w-30 h-10 ml-4">
-          <span className="cursor-pointer absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"
-          onClick={() => goToLoginPage()}></span>
+          <span
+            className="cursor-pointer absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"
+            onClick={() => goToLoginPage()}
+          ></span>
           <button
-          className="p-2 bg-emerald-200 text-black rounded leading-none border-2 border-emerald-500"
-          onClick={() => goToLoginPage()}
+            className="p-2 bg-emerald-200 text-black rounded leading-none border-2 border-emerald-500"
+            onClick={() => goToLoginPage()}
           >
-          Login
-          </button>        
+            Login
+          </button>
         </span>
       </span>
     </>
