@@ -147,4 +147,20 @@ img {
     margin: auto;
     width: 50%;
   }
+  .skip-button{
+    margin-left: 1rem;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .logout-phone{
+    position: absolute;
+    top: 3%;
+    left: 70%;
+    scale: 70%
+  }
+
+  .video-container-phone{
+    min-height: 40vh;
+  }
 }

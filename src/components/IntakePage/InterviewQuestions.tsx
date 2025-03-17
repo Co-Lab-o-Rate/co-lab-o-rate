@@ -193,7 +193,7 @@ const InterviewQuestions: FC<ComponentProps> = () => {
             Save & Continue
           </button>
           <button
-            className="bg-lime-500 text-white rounded w-30 p-3 leading-none mt-3 ml-3"
+            className="bg-lime-500 text-white rounded w-30 p-3 leading-none mt-3 skip-button"
             onClick={goToHomePage}
           >
             Skip Survey for now

@@ -11,7 +11,7 @@ const VideoPage: React.FC = () => {
   return (
     <>
     <LogoHeader />
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 video-container-phone">
       <div className="w-full max-w-4xl bg-white p-6 rounded-2xl shadow-lg">
         <div className="aspect-w-16 aspect-h-9 bg-gray-300 rounded-lg"></div>
         <div style={{padding:'56.25% 0 0 0', position:'relative'}}>
